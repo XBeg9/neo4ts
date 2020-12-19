@@ -27,4 +27,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn install --frozen-lockfile
-      - run: yarn test
+      - name: Run tests
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn test
