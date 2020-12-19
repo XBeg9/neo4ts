@@ -30,4 +30,13 @@ jobs:
       - name: Run tests
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn test
+        run: yarn test:ci
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        env:
+          NPM_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests
+          fail_ci_if_error: true
+          verbose: true
