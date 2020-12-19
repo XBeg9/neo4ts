@@ -1,6 +1,6 @@
 {
-  "name": "neo4j",
-  "version": "1.22.10",
+  "name": "neo4ts",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "private": true,
