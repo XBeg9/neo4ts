@@ -13,7 +13,8 @@
     "build": "tsc --build",
     "watch": "yarn build --watch",
     "test": "yarn jest",
-    "test:ci": "yarn jest --ci --coverage"
+    "test:ci": "yarn jest --ci --coverage",
+    "release": "yarn build && yarn changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.12.0",
