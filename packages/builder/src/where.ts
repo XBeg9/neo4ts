@@ -1,12 +1,5 @@
+import { NodeStatementError } from './errors';
 import { createFactory } from './utils';
-
-export class NodeStatementError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = this.constructor.name;
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
 
 export class NodeStatement {
   private _name!: string;

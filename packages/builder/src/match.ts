@@ -1,14 +1,7 @@
+import { EmptyNodesError } from './errors';
 import { Node } from './node';
 import { NodeRelation } from './node-relation';
 import { createFactory } from './utils';
-
-export class EmptyNodesError extends Error {
-  constructor() {
-    super("Match.nodes can't be empty");
-    this.name = this.constructor.name;
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
 
 class MatchBase {
   protected _nodesAndRelations: Array<Node | NodeRelation> = [];

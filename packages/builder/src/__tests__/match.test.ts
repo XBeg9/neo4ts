@@ -1,4 +1,5 @@
-import { EmptyNodesError, match, optionalMatch } from '../match';
+import { EmptyNodesError } from '../errors';
+import { match, optionalMatch } from '../match';
 import { node } from '../node';
 import { nodeRelation } from '../node-relation';
 
@@ -8,15 +9,28 @@ describe('MATCH', () => {
   });
 
   it('node', () => {
-    expect(match().node(node().name('n').label('Label')).getDSL()).toBe(
-      'MATCH (n:Label)'
-    );
+    expect(
+      match()
+        .node(
+          node()
+            .name('n')
+            .label('Label')
+        )
+        .getDSL()
+    ).toBe('MATCH (n:Label)');
   });
 
   it('nodes', () => {
     expect(
       match()
-        .nodes([node().name('a').label('A'), node().name('b').label('B')])
+        .nodes([
+          node()
+            .name('a')
+            .label('A'),
+          node()
+            .name('b')
+            .label('B')
+        ])
         .getDSL()
     ).toBe('MATCH (a:A), (b:B)');
   });
@@ -24,8 +38,16 @@ describe('MATCH', () => {
   it('multi node set', () => {
     expect(
       match()
-        .node(node().name('a').label('A'))
-        .node(node().name('b').label('B'))
+        .node(
+          node()
+            .name('a')
+            .label('A')
+        )
+        .node(
+          node()
+            .name('b')
+            .label('B')
+        )
         .getDSL()
     ).toBe('MATCH (a:A), (b:B)');
   });
@@ -56,7 +78,12 @@ describe('MATCH', () => {
       expect(
         match()
           .node(node().name('a'))
-          .related(nodeRelation().in().variable('r').type('ACTED_IN'))
+          .related(
+            nodeRelation()
+              .in()
+              .variable('r')
+              .type('ACTED_IN')
+          )
           .node(node().name('b'))
           .getDSL()
       ).toBe('MATCH (a)-[r:ACTED_IN]->(b)');
@@ -77,9 +104,17 @@ describe('MATCH', () => {
       expect(
         match()
           .node(node().name('person'))
-          .related(nodeRelation().type('ACTED_IN').in())
+          .related(
+            nodeRelation()
+              .type('ACTED_IN')
+              .in()
+          )
           .node(node().name('movie'))
-          .related(nodeRelation().type('DIRECTED').out())
+          .related(
+            nodeRelation()
+              .type('DIRECTED')
+              .out()
+          )
           .node(node().name('director'))
           .getDSL()
       ).toBe('MATCH (person)-[:ACTED_IN]->(movie)<-[:DIRECTED]-(director)');
@@ -89,8 +124,22 @@ describe('MATCH', () => {
 
 describe('OPTIONAL MATCH', () => {
   it('should equal to MATCH', () => {
-    expect(optionalMatch().node(node().name('n').label('Label')).getDSL()).toBe(
-      `OPTIONAL ${match().node(node().name('n').label('Label')).getDSL()}`
+    expect(
+      optionalMatch()
+        .node(
+          node()
+            .name('n')
+            .label('Label')
+        )
+        .getDSL()
+    ).toBe(
+      `OPTIONAL ${match()
+        .node(
+          node()
+            .name('n')
+            .label('Label')
+        )
+        .getDSL()}`
     );
   });
 });
