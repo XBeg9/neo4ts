@@ -1,7 +1,7 @@
 import { MaxHopsError } from './errors';
 import { createFactory } from './utils';
 
-enum NodeRelationDirection {
+export enum NodeRelationDirection {
   IN = '->',
   OUT = '<-',
   UNI = '-'

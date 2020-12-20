@@ -1,5 +1,5 @@
 import { Match, OptionalMatch } from './match';
-import { OrderBy } from './orderBy';
+import { OrderBy } from './order-by';
 import { Return } from './return';
 import { createFactory } from './utils';
 

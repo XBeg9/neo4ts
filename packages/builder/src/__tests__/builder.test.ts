@@ -2,7 +2,7 @@ import { query } from '../builder';
 import { match, optionalMatch } from '../match';
 import { node } from '../node';
 import { nodeRelation } from '../node-relation';
-import { orderBy } from '../orderBy';
+import { orderBy } from '../order-by';
 import { returns } from '../return';
 
 describe('QueryBuilder', () => {
