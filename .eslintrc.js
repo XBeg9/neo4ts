@@ -15,8 +15,7 @@ module.exports = {
     'promise',
     'jest',
     'prettier',
-    '@typescript-eslint',
-    'eslint-plugin-tsdoc'
+    '@typescript-eslint'
   ],
   root: true,
   env: {
@@ -69,6 +68,7 @@ module.exports = {
     'arrow-body-style': ['error', 'as-needed'],
     'arrow-parens': 0,
     'lines-between-class-members': ['error', 'always'],
+    'no-irregular-whitespace': ['warn', { "skipComments": true }],
 
     // Typescript
 
@@ -83,8 +83,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       { ignoreRestSiblings: true }
-    ],
-
-    'tsdoc/syntax': 'warn'
+    ]
   }
 };

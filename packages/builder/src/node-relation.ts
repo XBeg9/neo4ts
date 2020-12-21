@@ -1,4 +1,5 @@
 import { MaxHopsError } from './errors';
+import { QueryDSL } from './interfaces';
 import { createFactory } from './utils';
 
 export enum NodeRelationDirection {
@@ -7,57 +8,62 @@ export enum NodeRelationDirection {
   UNI = '-'
 }
 
-export class NodeRelation {
+export class NodeRelation implements QueryDSL {
+  /** @internal */
   private _direction = NodeRelationDirection.UNI;
 
+  /** @internal */
   private _variable?: string;
 
+  /** @internal */
   private _types: string[] = [];
 
+  /** @internal */
   private _minHops?: number;
 
+  /** @internal */
   private _maxHops?: number;
 
-  in() {
+  in(): this {
     this._direction = NodeRelationDirection.IN;
     return this;
   }
 
-  out() {
+  out(): this {
     this._direction = NodeRelationDirection.OUT;
     return this;
   }
 
-  uni() {
+  uni(): this {
     this._direction = NodeRelationDirection.UNI;
     return this;
   }
 
-  variable(name: string) {
+  variable(name: string): this {
     this._variable = name;
     return this;
   }
 
-  minHops(hops: number) {
+  minHops(hops: number): this {
     this._minHops = hops;
     return this;
   }
 
-  maxHops(hops: number) {
+  maxHops(hops: number): this {
     this._maxHops = hops;
     return this;
   }
 
-  type(type: string) {
+  type(type: string): this {
     return this.types([type]);
   }
 
-  types(types: string[]) {
+  types(types: string[]): this {
     this._types = [...this._types, ...types];
     return this;
   }
 
-  getDSL() {
+  getDSL(): string {
     if (!this._maxHops && this._minHops !== undefined) {
       throw new MaxHopsError();
     }

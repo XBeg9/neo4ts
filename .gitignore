@@ -20,3 +20,5 @@ state.json
 bin/istioctl
 certs
 **/istio-*
+temp
+**/docs/api

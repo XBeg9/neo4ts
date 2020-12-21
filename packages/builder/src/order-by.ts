@@ -2,19 +2,22 @@ import { NodeWithParam, NodeWithProperty } from './node-with-param';
 import { createFactory } from './utils';
 
 export class OrderBy extends NodeWithParam {
+  /** @internal */
   private _direction?: 'DESC';
 
-  nodes(nodes: Required<NodeWithProperty> | Required<NodeWithProperty>[]) {
+  nodes(
+    nodes: Required<NodeWithProperty> | Required<NodeWithProperty>[]
+  ): this {
     super.nodes(nodes);
     return this;
   }
 
-  desc() {
+  desc(): this {
     this._direction = 'DESC';
     return this;
   }
 
-  getDSL() {
+  getDSL(): string {
     return `ORDER BY ${[super.getDSL(), this._direction]
       .filter(Boolean)
       .join(' ')}`;

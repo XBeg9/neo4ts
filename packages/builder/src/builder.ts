@@ -4,32 +4,35 @@ import { Return } from './return';
 import { createFactory } from './utils';
 
 /**
- *
- * @export
- * @class QueryBuilder
+ * Starting point of any query builder functionality
  *
  * @public
  */
 export class QueryBuilder {
+  /** @internal */
   private _match!: Match;
 
+  /** @internal */
   private _optionalMatch?: OptionalMatch;
 
+  /** @internal */
   private _return!: Return;
 
+  /** @internal */
   private _orderby?: OrderBy;
 
+  /** @internal */
   private _limit?: string | number;
 
+  /** @internal */
   private _skip?: string | number;
 
   /**
    * Adds a MATCH query to builder
    *
-   * @param Match - match
-   * @returns QueryBuilder class (self)
+   * @param match Instance of Match class
    */
-  match(match: Match): QueryBuilder {
+  match(match: Match): this {
     this._match = match;
     return this;
   }
@@ -37,10 +40,9 @@ export class QueryBuilder {
   /**
    * Adds an OPTIONAL MATCH query to builder
    *
-   * @param OptionalMatch match
-   * @returns QueryBuilder class (self)
+   * @param match Instance of OptionalMatch class
    */
-  optionalMatch(match: OptionalMatch): QueryBuilder {
+  optionalMatch(match: OptionalMatch): this {
     this._optionalMatch = match;
     return this;
   }
@@ -48,41 +50,45 @@ export class QueryBuilder {
   /**
    * Adds RETURN clause definition to builder
    *
-   * @param {Return} rt
-   * @returns QueryBuilder class (self)
+   * @param rt Instance of Return class
    */
-  return(rt: Return): QueryBuilder {
+  return(rt: Return): this {
     this._return = rt;
     return this;
   }
 
   /**
-   * Adds LIMIT clause to builder
+   * Adds LIMIT constrains the number of rows in the output.
+   *
+   * LIMIT accepts any expression that evaluates to a positive integer — however the expression cannot refer to nodes or relationships.
    *
    * @example
-   * Using number as input
+   * Return a subset of the rows
    * ```javascript {4}
-   * query()
-   *    .match(match().nodes([node().name('n').label('Label')]))
-   *    .return(returns().nodes({ name: 'n' }))
+   * import * as n from '@neo4ts/query-builder';
+   *
+   * n.query()
+   *    .match(n.match().nodes([node().name('n').label('Label')]))
+   *    .return(n.returns().nodes({ name: 'n' }))
    *    .limit(5)
    *    .build()
    * ```
    *
    * @example
-   * Using expression
-   * ```javascript  {4}
-   * query()
-   *    .match(match().nodes([node().name('n').label('Label')]))
-   *    .return(returns().nodes({ name: 'n' }))
+   * Using an expression with LIMIT to return a subset of the rows
+   * ```javascript {4}
+   * import * as n from '@neo4ts/query-builder';
+   *
+   * n.query()
+   *    .match(n.match().nodes([node().name('n').label('Label')]))
+   *    .return(n.returns().nodes({ name: 'n' }))
    *    .limit('toInteger(3 * rand())+ 1')
    *    .build()
    * ```
    *
-   * @param limit - Limit by number of records or expression
-   * @returns QueryBuilder class (self)
+   * @param limit number of records or expression
    */
-  limit(limit: string | number): QueryBuilder {
+  limit(limit: string | number): this {
     this._limit = limit;
     return this;
   }
@@ -90,29 +96,52 @@ export class QueryBuilder {
   /**
    * Adds SKIP definition to builder
    *
-   * @param {(string | number)} skip
-   * @returns QueryBuilder class (self)
+   * @param skip number or expression
    */
-  skip(skip: string | number): QueryBuilder {
+  skip(skip: string | number): this {
     this._skip = skip;
     return this;
   }
 
   /**
-   * Adds ORDER BY definition to builder
+   * Adds ORDER BY statement to query builder.
+   * ORDER BY is a sub-clause following RETURN or WITH, and it specifies that the output should be sorted and how.
    *
-   * @param {OrderBy} orderBy
-   * @returns QueryBuilder class (self)
+   * @remarks
+   * Note that you cannot sort on nodes or relationships, just on properties on these.
+   *
+   * @example
+   * Order nodes in descending order
+   * ```javascript
+   * import * as n from '@neo4ts/query-builder';
+   *
+   * n.query()
+   *      .match(n.match().nodes([node().name('n').label('Label')]))
+   *      .return(n.returns().nodes({ name: 'n' }))
+   *      .orderBy(n.orderBy().nodes({ name: 'n', property: 'p' }).desc())
+   *      .build();
+   * ```
+   *
+   * @example
+   * Order nodes by multiple properties
+   * ```javascript
+   * import * as n from '@neo4ts/query-builder';
+   *
+   * n.query()
+   *      .match(n.match().nodes([node().name('n').label('Label')]))
+   *      .return(n.returns().nodes({ name: 'n' }))
+   *      .orderBy(n.orderBy().nodes([{ name: 'n', property: 'name' }, { name: 'n', property: 'title' }]))
+   *      .build();
+   * ```
+   * @param orderBy instance of OrderBy class
    */
-  orderBy(orderBy: OrderBy): QueryBuilder {
+  orderBy(orderBy: OrderBy): this {
     this._orderby = orderBy;
     return this;
   }
 
   /**
-   *  Builds the query from all provided definitions and returns Cypher
-   *
-   * @returns QueryBuilder class (self)
+   *  Builds the query from all provided definitions and returns the Cypher
    */
   build(): string {
     return [
