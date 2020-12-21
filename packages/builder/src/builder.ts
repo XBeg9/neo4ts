@@ -3,45 +3,118 @@ import { OrderBy } from './order-by';
 import { Return } from './return';
 import { createFactory } from './utils';
 
+/**
+ *
+ * @export
+ * @class QueryBuilder
+ *
+ * @public
+ */
 export class QueryBuilder {
   private _match!: Match;
+
   private _optionalMatch?: OptionalMatch;
+
   private _return!: Return;
+
   private _orderby?: OrderBy;
+
   private _limit?: string | number;
+
   private _skip?: string | number;
 
-  match(match: Match) {
+  /**
+   * Adds a MATCH query to builder
+   *
+   * @param Match - match
+   * @returns QueryBuilder class (self)
+   */
+  match(match: Match): QueryBuilder {
     this._match = match;
     return this;
   }
 
-  optionalMatch(match: OptionalMatch) {
+  /**
+   * Adds an OPTIONAL MATCH query to builder
+   *
+   * @param OptionalMatch match
+   * @returns QueryBuilder class (self)
+   */
+  optionalMatch(match: OptionalMatch): QueryBuilder {
     this._optionalMatch = match;
     return this;
   }
 
-  return(rt: Return) {
+  /**
+   * Adds RETURN clause definition to builder
+   *
+   * @param {Return} rt
+   * @returns QueryBuilder class (self)
+   */
+  return(rt: Return): QueryBuilder {
     this._return = rt;
     return this;
   }
 
-  limit(limit: string | number) {
+  /**
+   * Adds LIMIT clause to builder
+   *
+   * @example
+   * Using number as input
+   * ```javascript {4}
+   * query()
+   *    .match(match().nodes([node().name('n').label('Label')]))
+   *    .return(returns().nodes({ name: 'n' }))
+   *    .limit(5)
+   *    .build()
+   * ```
+   *
+   * @example
+   * Using expression
+   * ```javascript  {4}
+   * query()
+   *    .match(match().nodes([node().name('n').label('Label')]))
+   *    .return(returns().nodes({ name: 'n' }))
+   *    .limit('toInteger(3 * rand())+ 1')
+   *    .build()
+   * ```
+   *
+   * @param limit - Limit by number of records or expression
+   * @returns QueryBuilder class (self)
+   */
+  limit(limit: string | number): QueryBuilder {
     this._limit = limit;
     return this;
   }
 
-  skip(skip: string | number) {
+  /**
+   * Adds SKIP definition to builder
+   *
+   * @param {(string | number)} skip
+   * @returns QueryBuilder class (self)
+   */
+  skip(skip: string | number): QueryBuilder {
     this._skip = skip;
     return this;
   }
 
-  orderBy(orderBy: OrderBy) {
+  /**
+   * Adds ORDER BY definition to builder
+   *
+   * @param {OrderBy} orderBy
+   * @returns QueryBuilder class (self)
+   */
+  orderBy(orderBy: OrderBy): QueryBuilder {
     this._orderby = orderBy;
     return this;
   }
 
-  build() {
+  /**
+   *  Builds the query from all provided definitions and returns Cypher
+   *
+   * @returns QueryBuilder class (self)
+   */
+  build(): string {
     return [
       this._match.getDSL(),
       this._optionalMatch?.getDSL(),

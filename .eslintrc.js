@@ -3,9 +3,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:nestjs/recommended',
     'plugin:jest/recommended',
-    'plugin:security/recommended',
     'prettier',
     'prettier/@typescript-eslint'
   ],
@@ -15,12 +13,10 @@ module.exports = {
   },
   plugins: [
     'promise',
-    'security',
     'jest',
-    'nestjs',
     'prettier',
     '@typescript-eslint',
-    'graphql'
+    'eslint-plugin-tsdoc'
   ],
   root: true,
   env: {
@@ -28,20 +24,6 @@ module.exports = {
     jest: true
   },
   rules: {
-    /* security */
-    'security/detect-unsafe-regex': 'error',
-    'security/detect-buffer-noassert': 'error',
-    'security/detect-child-process': 'error',
-    'security/detect-disable-mustache-escape': 'error',
-    'security/detect-eval-with-expression': 'error',
-    'security/detect-no-csrf-before-method-override': 'error',
-    'security/detect-non-literal-fs-filename': 'off',
-    'security/detect-non-literal-regexp': 'error',
-    'security/detect-non-literal-require': 'error',
-    'security/detect-object-injection': 'off',
-    'security/detect-possible-timing-attacks': 'error',
-    'security/detect-pseudoRandomBytes': 'error',
-
     /* promises */
     'promise/always-return': 'error',
     'promise/catch-or-return': 'error',
@@ -98,15 +80,11 @@ module.exports = {
     '@typescript-eslint/unbound-method': 'warn',
     '@typescript-eslint/restrict-template-expressions': 'warn',
     '@typescript-eslint/no-implied-eval': 'warn',
-    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }]
-  },
-  overrides: [
-    {
-      // enable the rule specifically for TypeScript files
-      files: ['**/modules/**/*.resolver.ts'],
-      rules: {
-        '@typescript-eslint/explicit-function-return-type': ['warn']
-      }
-    }
-  ]
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { ignoreRestSiblings: true }
+    ],
+
+    'tsdoc/syntax': 'warn'
+  }
 };

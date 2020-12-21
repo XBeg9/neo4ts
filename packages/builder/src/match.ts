@@ -3,6 +3,11 @@ import { Node } from './node';
 import { NodeRelation } from './node-relation';
 import { createFactory } from './utils';
 
+/**
+ * Base class for Match and OptionalMatch
+ *
+ * @class MatchBase
+ */
 class MatchBase {
   protected _nodesAndRelations: Array<Node | NodeRelation> = [];
 
@@ -42,8 +47,22 @@ class MatchBase {
   }
 }
 
+/**
+ * Match class
+ *
+ * @summary provides a basic implementation of Match query
+ * @export
+ * @class Match
+ * @extends {MatchBase}
+ */
 export class Match extends MatchBase {
-  getDSL() {
+  /**
+   *  getDSL overrides match base
+   *
+   * @return {*}  {string}
+   * @memberof Match
+   */
+  getDSL(): string {
     return `MATCH ${super.getDSL()}`;
   }
 }

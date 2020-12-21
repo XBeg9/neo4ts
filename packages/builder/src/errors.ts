@@ -1,3 +1,10 @@
+/**
+ * Node Statement
+ *
+ * @export
+ * @class NodeStatementError
+ * @extends {Error}
+ */
 export class NodeStatementError extends Error {
   constructor(message: string) {
     super(message);
@@ -6,6 +13,13 @@ export class NodeStatementError extends Error {
   }
 }
 
+/**
+ *  EmptyNodesError must be trigger when match query is empty
+ *
+ * @export
+ * @class EmptyNodesError
+ * @extends {Error}
+ */
 export class EmptyNodesError extends Error {
   constructor() {
     super("Match.nodes can't be empty");

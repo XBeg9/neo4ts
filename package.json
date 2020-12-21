@@ -14,12 +14,25 @@
     "watch": "yarn build --watch",
     "test": "yarn jest",
     "test:ci": "yarn jest --ci --coverage",
-    "release": "yarn build && yarn changeset publish"
+    "release": "yarn build && yarn changeset publish",
+    "lint": "eslint packages/**/*.ts"
   },
   "devDependencies": {
     "@changesets/cli": "^2.12.0",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-compat": "^3.9.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-tsdoc": "^0.2.10",
     "jest": "^26.6.3",
-    "lerna": "^3.20.2",
+    "lerna": "^3.22.1",
+    "prettier": "^2.2.1",
+    "prettier-eslint": "^12.0.0",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
   }
