@@ -3,7 +3,9 @@ import { createFactory } from './utils';
 
 export class NodeStatement {
   private _name!: string;
+
   private _label?: string;
+
   private _property?: string;
 
   name(n: string) {
@@ -78,8 +80,11 @@ type Operator =
 
 export class Statement {
   private _left!: LeftRight;
+
   private _operator?: Operator;
+
   private _right?: LeftRight | RegExp;
+
   private _negative?: boolean = false;
 
   node(l: LeftRight) {

@@ -2,7 +2,9 @@ import { createFactory } from './utils';
 
 export class Node {
   private _name = '';
+
   private _label?: string;
+
   private _where: Record<string, string>[] = [];
 
   name(name: string) {

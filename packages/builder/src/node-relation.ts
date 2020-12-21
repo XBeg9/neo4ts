@@ -9,9 +9,13 @@ export enum NodeRelationDirection {
 
 export class NodeRelation {
   private _direction = NodeRelationDirection.UNI;
+
   private _variable?: string;
+
   private _types: string[] = [];
+
   private _minHops?: number;
+
   private _maxHops?: number;
 
   in() {
