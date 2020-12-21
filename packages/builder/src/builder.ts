@@ -5,7 +5,7 @@ import { createFactory } from './utils';
 
 /**
  * Starting point of any query builder functionality
- * 
+ *
  * @public
  */
 export class QueryBuilder {
@@ -61,12 +61,12 @@ export class QueryBuilder {
    * Adds LIMIT constrains the number of rows in the output.
    *
    * LIMIT accepts any expression that evaluates to a positive integer — however the expression cannot refer to nodes or relationships.
-   * 
+   *
    * @example
    * Return a subset of the rows
    * ```javascript {4}
    * import * as n from '@neo4ts/query-builder';
-   * 
+   *
    * n.query()
    *    .match(n.match().nodes([node().name('n').label('Label')]))
    *    .return(n.returns().nodes({ name: 'n' }))
@@ -76,9 +76,9 @@ export class QueryBuilder {
    *
    * @example
    * Using an expression with LIMIT to return a subset of the rows
-   * ```javascript  {4}
+   * ```javascript {4}
    * import * as n from '@neo4ts/query-builder';
-   * 
+   *
    * n.query()
    *    .match(n.match().nodes([node().name('n').label('Label')]))
    *    .return(n.returns().nodes({ name: 'n' }))
@@ -107,26 +107,26 @@ export class QueryBuilder {
    * Adds ORDER BY statement to query builder.
    * ORDER BY is a sub-clause following RETURN or WITH, and it specifies that the output should be sorted and how.
    *
-   * @remarks 
-   * Note that you cannot sort on nodes or relationships, just on properties on these. 
-   * 
+   * @remarks
+   * Note that you cannot sort on nodes or relationships, just on properties on these.
+   *
    * @example
    * Order nodes in descending order
    * ```javascript
    * import * as n from '@neo4ts/query-builder';
-   * 
+   *
    * n.query()
    *      .match(n.match().nodes([node().name('n').label('Label')]))
    *      .return(n.returns().nodes({ name: 'n' }))
    *      .orderBy(n.orderBy().nodes({ name: 'n', property: 'p' }).desc())
    *      .build();
    * ```
-   * 
+   *
    * @example
    * Order nodes by multiple properties
    * ```javascript
    * import * as n from '@neo4ts/query-builder';
-   * 
+   *
    * n.query()
    *      .match(n.match().nodes([node().name('n').label('Label')]))
    *      .return(n.returns().nodes({ name: 'n' }))

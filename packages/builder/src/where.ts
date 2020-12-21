@@ -166,7 +166,11 @@ export class Statement implements QueryDSL {
   }
 
   /** @internal */
-  private basicOperator(l: LeftRight, op: Operator, r: LeftRight | RegExp): this {
+  private basicOperator(
+    l: LeftRight,
+    op: Operator,
+    r: LeftRight | RegExp
+  ): this {
     this._left = l;
     this._operator = op;
     this._right = r;

@@ -1,5 +1,5 @@
 /**
- * Factory method returns a function that accepts Class constructor methods 
+ * Factory method returns a function that accepts Class constructor methods
  * while invoking will create a instance of the class with specified arguments
  *
  * @template T - Class that will be returned

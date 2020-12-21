@@ -1,3 +1,3 @@
 export interface QueryDSL {
-    getDSL(): string;
+  getDSL(): string;
 }

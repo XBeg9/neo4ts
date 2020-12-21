@@ -56,7 +56,7 @@ abstract class MatchBase implements QueryDSL {
 
 /**
  * The MATCH clause is used to search for the pattern described in it.
- * 
+ *
  * @public
  */
 export class Match extends MatchBase {

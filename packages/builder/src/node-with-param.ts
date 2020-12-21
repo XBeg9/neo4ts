@@ -1,4 +1,4 @@
-import { QueryDSL } from "./interfaces";
+import { QueryDSL } from './interfaces';
 
 export interface NodeWithProperty {
   name: string;

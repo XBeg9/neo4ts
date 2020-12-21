@@ -1,4 +1,3 @@
-import { QueryDSL } from './interfaces';
 import { NodeWithParam, NodeWithProperty } from './node-with-param';
 import { createFactory } from './utils';
 
@@ -6,7 +5,9 @@ export class OrderBy extends NodeWithParam {
   /** @internal */
   private _direction?: 'DESC';
 
-  nodes(nodes: Required<NodeWithProperty> | Required<NodeWithProperty>[]): this {
+  nodes(
+    nodes: Required<NodeWithProperty> | Required<NodeWithProperty>[]
+  ): this {
     super.nodes(nodes);
     return this;
   }

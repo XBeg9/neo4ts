@@ -8,7 +8,7 @@ import { createFactory } from './utils';
  * When you want to return all nodes, relationships and paths found in a query, you can use the `.all()` symbol.
  * ```javascript {5}
  * import * as n from '@neo4ts/query-builder';
- * 
+ *
  * n.query()
  *      .match(n.match().nodes([node().name('n').label('Label')]))
  *      .return(n.returns().all())
