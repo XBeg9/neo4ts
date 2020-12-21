@@ -1,29 +1,33 @@
 import { NodeStatementError } from './errors';
+import { QueryDSL } from './interfaces';
 import { createFactory } from './utils';
 
-export class NodeStatement {
+export class NodeStatement implements QueryDSL {
+  /** @internal */
   private _name!: string;
 
+  /** @internal */
   private _label?: string;
 
+  /** @internal */
   private _property?: string;
 
-  name(n: string) {
+  name(n: string): this {
     this._name = n;
     return this;
   }
 
-  label(n: string) {
+  label(n: string): this {
     this._label = n;
     return this;
   }
 
-  property(n: string) {
+  property(n: string): this {
     this._property = n;
     return this;
   }
 
-  getDSL() {
+  getDSL(): string {
     if (this._label && this._property) {
       throw new NodeStatementError("can't have both label and property");
     }
@@ -38,32 +42,30 @@ export class NodeStatement {
 
 export const nodeStatement = createFactory(NodeStatement);
 
-type LeftRight = number | string | NodeStatement;
+export type LeftRight = number | string | NodeStatement;
 
-export interface QueryDSL {
-  getDSL(): string;
-}
-
+/** @internal */
 function isDSL(o?: any): o is QueryDSL {
   return o && (o as QueryDSL).getDSL !== undefined;
 }
 
 export class ExistsOperator implements QueryDSL {
+  /** @internal */
   private _node!: NodeStatement;
 
-  node(n: NodeStatement) {
+  node(n: NodeStatement): this {
     this._node = n;
     return this;
   }
 
-  getDSL() {
+  getDSL(): string {
     return `EXISTS(${this._node.getDSL()})`;
   }
 }
 
 export const existsOperator = createFactory(ExistsOperator);
 
-type Operator =
+export type Operator =
   | '='
   | '!='
   | '<'
@@ -78,77 +80,81 @@ type Operator =
   | 'IS NULL'
   | ExistsOperator;
 
-export class Statement {
+export class Statement implements QueryDSL {
+  /** @internal */
   private _left!: LeftRight;
 
+  /** @internal */
   private _operator?: Operator;
 
+  /** @internal */
   private _right?: LeftRight | RegExp;
 
+  /** @internal */
   private _negative?: boolean = false;
 
-  node(l: LeftRight) {
+  node(l: LeftRight): this {
     this._left = l;
     return this;
   }
 
-  eq(l: LeftRight, r: LeftRight) {
+  eq(l: LeftRight, r: LeftRight): this {
     return this.basicOperator(l, '=', r);
   }
 
-  notEq(l: LeftRight, r: LeftRight) {
+  notEq(l: LeftRight, r: LeftRight): this {
     return this.basicOperator(l, '!=', r);
   }
 
-  gt(l: LeftRight, r: LeftRight) {
+  gt(l: LeftRight, r: LeftRight): this {
     return this.basicOperator(l, '>', r);
   }
 
-  gte(l: LeftRight, r: LeftRight) {
+  gte(l: LeftRight, r: LeftRight): this {
     return this.basicOperator(l, '>=', r);
   }
 
-  lt(l: LeftRight, r: LeftRight) {
+  lt(l: LeftRight, r: LeftRight): this {
     return this.basicOperator(l, '<', r);
   }
 
-  lte(l: LeftRight, r: LeftRight) {
+  lte(l: LeftRight, r: LeftRight): this {
     return this.basicOperator(l, '<=', r);
   }
 
-  startsWith(l: LeftRight, r: string) {
+  startsWith(l: LeftRight, r: string): this {
     return this.basicOperator(l, 'STARTS WITH', r);
   }
 
-  endsWith(l: LeftRight, r: string) {
+  endsWith(l: LeftRight, r: string): this {
     return this.basicOperator(l, 'ENDS WITH', r);
   }
 
-  contains(l: LeftRight, r: string) {
+  contains(l: LeftRight, r: string): this {
     return this.basicOperator(l, 'CONTAINS', r);
   }
 
-  regexp(l: LeftRight, r: RegExp) {
+  regexp(l: LeftRight, r: RegExp): this {
     return this.basicOperator(l, '=~', r);
   }
 
-  exists(node: NodeStatement) {
+  exists(node: NodeStatement): this {
     this._operator = existsOperator().node(node);
     return this;
   }
 
-  null(node: NodeStatement) {
+  null(node: NodeStatement): this {
     this._left = node;
     this._operator = this._negative ? 'IS NOT NULL' : 'IS NULL';
     return this;
   }
 
-  not() {
+  not(): this {
     this._negative = true;
     return this;
   }
 
-  getDSL() {
+  getDSL(): string {
     return [
       this._negative ? (this._right ? 'NOT' : '') : undefined,
       this._sideDsl(this._left),
@@ -159,42 +165,48 @@ export class Statement {
       .join(' ');
   }
 
-  private basicOperator(l: LeftRight, op: Operator, r: LeftRight | RegExp) {
+  /** @internal */
+  private basicOperator(l: LeftRight, op: Operator, r: LeftRight | RegExp): this {
     this._left = l;
     this._operator = op;
     this._right = r;
     return this;
   }
 
-  private _sideDsl(obj?: LeftRight | RegExp) {
+  /** @internal */
+  private _sideDsl(obj?: LeftRight | RegExp): string | undefined {
+    if (!obj) {
+      return undefined;
+    }
+
     return obj instanceof NodeStatement
       ? obj.getDSL()
-      : obj && typeof obj !== 'number'
+      : typeof obj !== 'number'
       ? `'${obj}'`
-      : obj;
+      : obj.toString();
   }
 }
 
 export const statement = createFactory(Statement);
 
-export class Where {
-  // or() {
+export class Where implements QueryDSL {
+  // or(): this {
 
   // }
 
-  // and() {
+  // and(): this {
 
   // }
 
-  // not() {
+  // not(): this {
 
   // }
 
-  // xor() {
+  // xor(): this {
 
   // }
 
-  getDSL() {
+  getDSL(): string {
     return `WHERE`;
   }
 }

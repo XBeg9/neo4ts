@@ -1,8 +1,7 @@
 export * from './builder';
-export * from './match';
-export * from './node-relation';
-export * from './node-with-param';
-export * from './node';
-export * from './order-by';
-export * from './return';
-export * from './where';
+export { match, Match, optionalMatch, OptionalMatch } from './match';
+export { nodeRelation } from './node-relation';
+export { node } from './node';
+export { orderBy, OrderBy } from './order-by';
+export { returns, Return } from './return';
+export { where, Where } from './where';

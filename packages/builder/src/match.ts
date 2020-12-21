@@ -1,4 +1,5 @@
 import { EmptyNodesError } from './errors';
+import { QueryDSL } from './interfaces';
 import { Node } from './node';
 import { NodeRelation } from './node-relation';
 import { createFactory } from './utils';
@@ -6,25 +7,31 @@ import { createFactory } from './utils';
 /**
  * Base class for Match and OptionalMatch
  *
- * @class MatchBase
+ * @internal
  */
-class MatchBase {
+abstract class MatchBase implements QueryDSL {
+  /** @internal */
   protected _nodesAndRelations: Array<Node | NodeRelation> = [];
 
-  nodes(nodes: Array<Node | NodeRelation>) {
+  /**
+   * Add nodes to be added into MATCH clause
+   *
+   * @param nodes nodes to be matched
+   */
+  nodes(nodes: Array<Node | NodeRelation>): this {
     this._nodesAndRelations = [...this._nodesAndRelations, ...nodes];
     return this;
   }
 
-  node(node: Node) {
+  node(node: Node): this {
     return this.nodes([node]);
   }
 
-  related(related: NodeRelation) {
+  related(related: NodeRelation): this {
     return this.nodes([related]);
   }
 
-  getDSL() {
+  getDSL(): string {
     if (this._nodesAndRelations.length === 0) {
       throw new EmptyNodesError();
     }
@@ -48,31 +55,33 @@ class MatchBase {
 }
 
 /**
- * Match class
- *
- * @summary provides a basic implementation of Match query
- * @export
- * @class Match
- * @extends {MatchBase}
+ * The MATCH clause is used to search for the pattern described in it.
+ * 
+ * @public
  */
 export class Match extends MatchBase {
-  /**
-   *  getDSL overrides match base
-   *
-   * @return {*}  {string}
-   * @memberof Match
-   */
   getDSL(): string {
     return `MATCH ${super.getDSL()}`;
   }
 }
 
+/**
+ * Factory method for Match class
+ */
 export const match = createFactory(Match);
 
+/**
+ * The OPTIONAL MATCH clause is used to search for the pattern described in it, while using nulls for missing parts of the pattern.
+ *
+ * @public
+ */
 export class OptionalMatch extends MatchBase {
-  getDSL() {
+  getDSL(): string {
     return `OPTIONAL MATCH ${super.getDSL()}`;
   }
 }
 
+/**
+ * Factory method for OptionalMatch class
+ */
 export const optionalMatch = createFactory(OptionalMatch);
