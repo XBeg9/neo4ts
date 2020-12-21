@@ -1,13 +1,9 @@
-name: Run Tests
+name: Run Lint
 
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+on: [push]
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,11 +19,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run tests
-        run: yarn test:ci
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
-          fail_ci_if_error: true
-          verbose: true
+        run: yarn lint
