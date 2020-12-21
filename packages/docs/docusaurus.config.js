@@ -67,7 +67,7 @@ module.exports = {
       'docusaurus-plugin-typedoc',
       {
         // Plugin options
-        inputFiles: ['../packages/builder/src'],
+        inputFiles: ['../builder/src'],
         stripInternal: true,
         excludeProtected: true,
         docsRoot: 'docs',
