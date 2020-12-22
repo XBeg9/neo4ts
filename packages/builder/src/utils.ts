@@ -13,3 +13,16 @@ export function createFactory<T, P extends any[]>(
 ) {
   return (...args: P) => new Create(...args);
 }
+
+export const intersperse = <T, B>(
+  arr: T[],
+  separator: (idx: number) => B
+): Array<T | B> =>
+  arr.reduce<Array<T | B>>((acc, currentElement, currentIndex) => {
+    const isLast = currentIndex === arr.length - 1;
+    return [
+      ...acc,
+      currentElement,
+      ...(isLast ? [] : [separator(currentIndex)])
+    ];
+  }, []);
