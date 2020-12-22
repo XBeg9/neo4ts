@@ -1,5 +1,15 @@
 # @neo4ts/query-builder
 
+## 2.0.0
+
+### Major Changes
+
+- 661d68c: Add where functionality
+
+### Patch Changes
+
+- f80b266: Add initial documentation
+
 ## 1.2.0
 
 ### Minor Changes
