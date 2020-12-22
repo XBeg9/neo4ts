@@ -1,6 +1,6 @@
 import { NodeStatementError } from './errors';
 import { QueryDSL } from './interfaces';
-import { createFactory } from './utils';
+import { createFactory, intersperse } from './utils';
 
 export class NodeStatement implements QueryDSL {
   /** @internal */
@@ -193,25 +193,74 @@ export class Statement implements QueryDSL {
 
 export const statement = createFactory(Statement);
 
+abstract class StatementOperator implements QueryDSL {
+  private _op: string;
+
+  constructor(op: string) {
+    this._op = op;
+  }
+
+  getDSL() {
+    return this._op;
+  }
+}
+
+export class OrStatementOperator extends StatementOperator {
+  constructor() {
+    super('OR');
+  }
+}
+
+export class AndStatementOperator extends StatementOperator {
+  constructor() {
+    super('AND');
+  }
+}
+
+export class XorStatementOperator extends StatementOperator {
+  constructor() {
+    super('XOR');
+  }
+}
+
 export class Where implements QueryDSL {
-  // or(): this {
+  private _statements: Array<Array<Statement | StatementOperator>> = [];
 
-  // }
+  or(statements: Statement[] = []): this {
+    return this.addStatement(new OrStatementOperator(), statements);
+  }
 
-  // and(): this {
+  and(statements: Statement[] = []): this {
+    return this.addStatement(new AndStatementOperator(), statements);
+  }
 
-  // }
-
-  // not(): this {
-
-  // }
-
-  // xor(): this {
-
-  // }
+  xor(statements: Statement[] = []): this {
+    return this.addStatement(new XorStatementOperator(), statements);
+  }
 
   getDSL(): string {
-    return `WHERE`;
+    return `WHERE ${this._statements
+      .map(s =>
+        this._statements.length > 1
+          ? s.length > 1
+            ? `(${s.map(t => t.getDSL()).join(' ')})`
+            : s[0].getDSL()
+          : s.map(t => t.getDSL()).join(' ')
+      )
+      .join(' ')}`;
+  }
+
+  private addStatement(
+    operator: StatementOperator,
+    statements: Statement[] = []
+  ): this {
+    if (statements.length) {
+      this._statements.push(intersperse(statements, () => operator));
+    } else {
+      this._statements.push([operator]);
+    }
+
+    return this;
   }
 }
 
