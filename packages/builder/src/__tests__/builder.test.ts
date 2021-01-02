@@ -103,8 +103,8 @@ describe('QueryBuilder', () => {
             .related(nodeRelation().in().variable('r').type('ACTED_IN'))
             .node(node().name('b'))
         )
-        .return(returns().columns(col().name('r')))
+        .return(returns().columns(col().name('r').alias('b')))
         .build()
-    ).toBe(`MATCH (a)-[r:ACTED_IN]->(b) RETURN r`);
+    ).toBe(`MATCH (a)-[r:ACTED_IN]->(b) RETURN r AS b`);
   });
 });
