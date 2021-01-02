@@ -1,14 +1,18 @@
-import { NodeWithParam, NodeWithProperty } from './node-with-param';
+import { Column } from './column';
 import { createFactory } from './utils';
 
-export class OrderBy extends NodeWithParam {
+export class OrderBy {
   /** @internal */
   private _direction?: 'DESC';
 
-  nodes(
-    nodes: Required<NodeWithProperty> | Required<NodeWithProperty>[]
-  ): this {
-    super.nodes(nodes);
+  /** @internal */
+  private _columns: Column[] = [];
+
+  columns(objects: Column | Column[]): this {
+    this._columns = [
+      ...this._columns,
+      ...(Array.isArray(objects) ? objects : [objects])
+    ];
     return this;
   }
 
@@ -18,7 +22,10 @@ export class OrderBy extends NodeWithParam {
   }
 
   getDSL(): string {
-    return `ORDER BY ${[super.getDSL(), this._direction]
+    return `ORDER BY ${[
+      this._columns.map(c => c.getDSL()).join(', '),
+      this._direction
+    ]
       .filter(Boolean)
       .join(' ')}`;
   }

@@ -1,4 +1,5 @@
 import { query } from '../builder';
+import { col } from '../column';
 import { match, optionalMatch } from '../match';
 import { node } from '../node';
 import { nodeRelation } from '../node-relation';
@@ -11,8 +12,8 @@ describe('QueryBuilder', () => {
       expect(
         query()
           .match(match().nodes([node().name('n').label('Label')]))
-          .return(returns().nodes({ name: 'n' }))
-          .orderBy(orderBy().nodes({ name: 'n', property: 'p' }))
+          .return(returns().columns(col().name('n')))
+          .orderBy(orderBy().columns(col().name('n').property('p')))
           .build()
       ).toBe(`MATCH (n:Label) RETURN n ORDER BY n.p`);
     });
@@ -21,8 +22,8 @@ describe('QueryBuilder', () => {
       expect(
         query()
           .match(match().nodes([node().name('n').label('Label')]))
-          .return(returns().nodes({ name: 'n' }))
-          .orderBy(orderBy().nodes({ name: 'n', property: 'p' }).desc())
+          .return(returns().columns(col().name('n')))
+          .orderBy(orderBy().columns(col().name('n').property('p')).desc())
           .build()
       ).toBe(`MATCH (n:Label) RETURN n ORDER BY n.p DESC`);
     });
@@ -34,7 +35,7 @@ describe('QueryBuilder', () => {
       expect(
         query()
           .match(match().nodes([node().name('n').label('Label')]))
-          .return(returns().nodes({ name: 'n' }))
+          .return(returns().columns(col().name('n')))
           .skip(skip)
           .build()
       ).toBe(`MATCH (n:Label) RETURN n SKIP ${skip}`);
@@ -45,7 +46,7 @@ describe('QueryBuilder', () => {
       expect(
         query()
           .match(match().nodes([node().name('n').label('Label')]))
-          .return(returns().nodes({ name: 'n' }))
+          .return(returns().columns(col().name('n')))
           .skip(skip)
           .build()
       ).toBe(`MATCH (n:Label) RETURN n SKIP ${skip}`);
@@ -58,7 +59,7 @@ describe('QueryBuilder', () => {
       expect(
         query()
           .match(match().nodes([node().name('n').label('Label')]))
-          .return(returns().nodes({ name: 'n' }))
+          .return(returns().columns(col().name('n')))
           .limit(limit)
           .build()
       ).toBe(`MATCH (n:Label) RETURN n LIMIT ${limit}`);
@@ -69,7 +70,7 @@ describe('QueryBuilder', () => {
       expect(
         query()
           .match(match().nodes([node().name('n').label('Label')]))
-          .return(returns().nodes({ name: 'n' }))
+          .return(returns().columns(col().name('n')))
           .limit(limit)
           .build()
       ).toBe(`MATCH (n:Label) RETURN n LIMIT ${limit}`);
@@ -83,8 +84,8 @@ describe('QueryBuilder', () => {
       query()
         .match(match().nodes([node().name('a').label('A')]))
         .optionalMatch(optionalMatch().nodes([node().name('b').label('B')]))
-        .return(returns().nodes({ name: 'n' }))
-        .orderBy(orderBy().nodes({ name: 'n', property: 'p' }))
+        .return(returns().columns(col().name('n')))
+        .orderBy(orderBy().columns(col().name('n').property('p')))
         .skip(skip)
         .limit(limit)
         .build()
@@ -102,7 +103,7 @@ describe('QueryBuilder', () => {
             .related(nodeRelation().in().variable('r').type('ACTED_IN'))
             .node(node().name('b'))
         )
-        .return(returns().nodes({ name: 'r' }))
+        .return(returns().columns(col().name('r')))
         .build()
     ).toBe(`MATCH (a)-[r:ACTED_IN]->(b) RETURN r`);
   });

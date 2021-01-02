@@ -1,4 +1,4 @@
-import { NodeWithParam } from './node-with-param';
+import { Column } from './column';
 import { createFactory } from './utils';
 
 /**
@@ -15,9 +15,12 @@ import { createFactory } from './utils';
  *      .build();
  * ```
  */
-export class Return extends NodeWithParam {
+export class Return {
   /** @internal */
   private _all: boolean = false;
+
+  /** @internal */
+  private _columns: Column[] = [];
 
   /**
    * Return all elements
@@ -27,12 +30,20 @@ export class Return extends NodeWithParam {
     return this;
   }
 
+  columns(objects: Column | Column[]): this {
+    this._columns = [
+      ...this._columns,
+      ...(Array.isArray(objects) ? objects : [objects])
+    ];
+    return this;
+  }
+
   getDSL(): string {
     if (this._all) {
       return 'RETURN *';
     }
 
-    return `RETURN ${super.getDSL()}`;
+    return `RETURN ${this._columns.map(c => c.getDSL()).join(', ')}`;
   }
 }
 

@@ -1,3 +1,4 @@
+import { col } from '../column';
 import { returns } from '../return';
 
 describe('Return', () => {
@@ -6,50 +7,39 @@ describe('Return', () => {
   });
 
   it('all must override all other params', () => {
-    expect(
-      returns()
-        .nodes([{ name: 'n' }])
-        .all()
-        .getDSL()
-    ).toBe(`RETURN *`);
+    expect(returns().columns(col().name('n')).all().getDSL()).toBe(`RETURN *`);
   });
 
-  it('node without property', () => {
-    expect(
-      returns()
-        .nodes([{ name: 'n' }])
-        .getDSL()
-    ).toBe(`RETURN n`);
+  it('column without property', () => {
+    expect(returns().columns(col().name('n')).getDSL()).toBe(`RETURN n`);
   });
 
-  it('node with property', () => {
-    expect(
-      returns()
-        .nodes([{ name: 'n', property: 'prop' }])
-        .getDSL()
-    ).toBe(`RETURN n.prop`);
+  it('column with property', () => {
+    expect(returns().columns(col().name('n').property('prop')).getDSL()).toBe(
+      `RETURN n.prop`
+    );
   });
 
-  it('array of nodes', () => {
+  it('array of columns', () => {
     expect(
       returns()
-        .nodes([{ name: 'a' }, { name: 'b' }])
+        .columns([col().name('a'), col().name('b')])
         .getDSL()
     ).toBe(`RETURN a, b`);
   });
 
-  it('multi nodes statements', () => {
-    expect(returns().nodes({ name: 'a' }).nodes({ name: 'b' }).getDSL()).toBe(
-      `RETURN a, b`
-    );
+  it('multi columns statements', () => {
+    expect(
+      returns().columns(col().name('a')).columns(col().name('b')).getDSL()
+    ).toBe(`RETURN a, b`);
   });
 
-  it('array of nodes with props', () => {
+  it('array of columns with props', () => {
     expect(
       returns()
-        .nodes([
-          { name: 'a', property: 'propA' },
-          { name: 'b', property: 'propB' }
+        .columns([
+          col().name('a').property('propA'),
+          col().name('b').property('propB')
         ])
         .getDSL()
     ).toBe(`RETURN a.propA, b.propB`);
