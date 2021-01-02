@@ -26,5 +26,21 @@ export class Column implements QueryDSL {
   }
 }
 
-export const column = createFactory(Column);
+export class ColumnWithAlias extends Column {
+  /** @internal */
+  private _alias?: string;
+
+  alias(alias: string) {
+    this._alias = alias;
+    return this;
+  }
+
+  getDSL() {
+    return [super.getDSL(), this._alias && `AS ${this._alias}`]
+      .filter(Boolean)
+      .join(' ');
+  }
+}
+
+export const column = createFactory(ColumnWithAlias);
 export const col = column;

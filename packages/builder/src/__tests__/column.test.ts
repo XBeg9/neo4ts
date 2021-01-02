@@ -12,4 +12,10 @@ describe('column', () => {
   it('name and property', () => {
     expect(column().name('a').property('prop').getDSL()).toEqual('a.prop');
   });
+
+  it('alias', () => {
+    expect(col().name('a').property('prop').alias('alias').getDSL()).toEqual(
+      'a.prop AS alias'
+    );
+  });
 });
