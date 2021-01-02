@@ -1,7 +1,15 @@
-import { col } from '../column';
+import { col, column } from '../column';
 
 describe('column', () => {
-  it('intersperse', () => {
-    expect(col().name('a')).toStrictEqual([1, 5, 2, 5, 3]);
+  it('just name', () => {
+    expect(col().name('a').getDSL()).toEqual('a');
+  });
+
+  it('just prop', () => {
+    expect(col().property('a').getDSL()).toEqual('');
+  });
+
+  it('name and property', () => {
+    expect(column().name('a').property('prop').getDSL()).toEqual('a.prop');
   });
 });

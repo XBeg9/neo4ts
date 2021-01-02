@@ -19,6 +19,9 @@ export class Column implements QueryDSL {
   }
 
   getDSL(): string {
+    if (!this._name) {
+      return '';
+    }
     return `${[this._name, this._property].filter(Boolean).join('.')}`;
   }
 }
