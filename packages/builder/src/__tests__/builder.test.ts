@@ -1,5 +1,5 @@
 import { query } from '../builder';
-import { col } from '../column';
+import { col, projection } from '../column';
 import { match, optionalMatch } from '../match';
 import { node } from '../node';
 import { nodeRelation } from '../node-relation';
@@ -106,5 +106,18 @@ describe('QueryBuilder', () => {
         .return(returns().columns(col().name('r').alias('b')))
         .build()
     ).toBe(`MATCH (a)-[r:ACTED_IN]->(b) RETURN r AS b`);
+  });
+
+  it('projection', () => {
+    expect(
+      query()
+        .match(match().nodes([node().name('n').label('Label')]))
+        .return(
+          returns().columns(
+            projection().name('a').properties(['prop1', 'prop2']).alias('b')
+          )
+        )
+        .build()
+    ).toBe(`MATCH (n:Label) RETURN a { .prop1, .prop2 } AS b`);
   });
 });

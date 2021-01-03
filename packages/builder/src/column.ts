@@ -1,5 +1,6 @@
 import { QueryDSL } from './interfaces';
 import { createFactory } from './utils';
+import { withAlias } from './with-alias';
 
 export class Column implements QueryDSL {
   /** @internal */
@@ -26,21 +27,35 @@ export class Column implements QueryDSL {
   }
 }
 
-export class ColumnWithAlias extends Column {
+export class ColumnProjection implements QueryDSL {
   /** @internal */
-  private _alias?: string;
+  private _name!: string;
 
-  alias(alias: string) {
-    this._alias = alias;
+  /** @internal */
+  private _properties: string[] = [];
+
+  name(name: string) {
+    this._name = name;
     return this;
   }
 
-  getDSL() {
-    return [super.getDSL(), this._alias && `AS ${this._alias}`]
+  properties(objects: string | string[]): this {
+    this._properties = [
+      ...this._properties,
+      ...(Array.isArray(objects) ? objects : [objects])
+    ];
+    return this;
+  }
+
+  getDSL(): string {
+    return `${this._name} { ${this._properties
       .filter(Boolean)
-      .join(' ');
+      .map(p => `.${p}`)
+      .join(', ')} }`;
   }
 }
 
-export const column = createFactory(ColumnWithAlias);
+export const column = createFactory(withAlias(Column));
 export const col = column;
+export const projection = createFactory(withAlias(ColumnProjection));
+export const proj = projection;
