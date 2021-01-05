@@ -1,4 +1,7 @@
-import { col, column, proj, projection } from '../column';
+import { col, column, list, proj, projection } from '../column';
+import { match } from '../match';
+import { node } from '../node';
+import { nodeRelation } from '../node-relation';
 
 describe('column', () => {
   it('just name', () => {
@@ -36,6 +39,76 @@ describe('column', () => {
       expect(proj().name('a').properties('prop').alias('b').getDSL()).toEqual(
         'a { .prop } AS b'
       );
+    });
+
+    describe('nested', () => {
+      it('simple', () => {
+        expect(
+          proj()
+            .name('a')
+            .properties(['prop', proj().name('b').properties('prop')])
+            .getDSL()
+        ).toEqual('a { .prop, b: { .prop } }');
+      });
+
+      it('deep', () => {
+        expect(
+          proj()
+            .name('a')
+            .properties([
+              'prop',
+              proj()
+                .name('b')
+                .properties(['prop', proj().name('c').properties('prop')])
+            ])
+            .getDSL()
+        ).toEqual('a { .prop, b: { .prop, c: { .prop } } }');
+      });
+    });
+  });
+
+  describe('list', () => {
+    it('with column', () => {
+      expect(
+        list()
+          .select(
+            match()
+              .node(node().name('a'))
+              .related(nodeRelation().type('ACTED_IN').in())
+              .node(node().name('b'))
+          )
+          .pipe([col().name('a').property('prop')])
+          .getDSL()
+      ).toEqual('[(a)-[:ACTED_IN]->(b) | a.prop]');
+    });
+
+    it('with projection', () => {
+      expect(
+        list()
+          .select(
+            match()
+              .node(node().name('a'))
+              .related(nodeRelation().type('ACTED_IN').in())
+              .node(node().name('b'))
+          )
+          .pipe(projection().name('a').properties('prop'))
+          .getDSL()
+      ).toEqual('[(a)-[:ACTED_IN]->(b) | a { .prop }]');
+    });
+
+    it('with alias', () => {
+      expect(
+        list()
+          .select(
+            match()
+              .node(node().name('a'))
+              .related(nodeRelation().type('ACTED_IN').in())
+              .node(node().name('b'))
+          )
+          .pipe([col().name('a').property('prop')])
+          .alias('col')
+          .getDSL()
+      ).toEqual('[(a)-[:ACTED_IN]->(b) | a.prop] AS col');
     });
   });
 });

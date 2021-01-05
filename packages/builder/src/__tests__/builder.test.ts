@@ -1,5 +1,5 @@
 import { query } from '../builder';
-import { col, projection } from '../column';
+import { col, list, projection } from '../column';
 import { match, optionalMatch } from '../match';
 import { node } from '../node';
 import { nodeRelation } from '../node-relation';
@@ -119,5 +119,26 @@ describe('QueryBuilder', () => {
         )
         .build()
     ).toBe(`MATCH (n:Label) RETURN a { .prop1, .prop2 } AS b`);
+  });
+
+  it('list', () => {
+    expect(
+      query()
+        .match(match().nodes([node().name('n').label('Label')]))
+        .return(
+          returns().columns(
+            list()
+              .select(
+                match()
+                  .node(node().name('a'))
+                  .related(nodeRelation().type('ACTED_IN').in())
+                  .node(node().name('b'))
+              )
+              .pipe([col().name('a').property('prop')])
+              .alias('col')
+          )
+        )
+        .build()
+    ).toBe(`MATCH (n:Label) RETURN [(a)-[:ACTED_IN]->(b) | a.prop] AS col`);
   });
 });
