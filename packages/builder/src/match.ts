@@ -60,8 +60,15 @@ abstract class MatchBase implements QueryDSL {
  * @public
  */
 export class Match extends MatchBase {
+  protected _nested = false;
+
+  nested(n: boolean) {
+    this._nested = n;
+    return this;
+  }
+
   getDSL(): string {
-    return `MATCH ${super.getDSL()}`;
+    return [!this._nested && 'MATCH', super.getDSL()].filter(Boolean).join(' ');
   }
 }
 

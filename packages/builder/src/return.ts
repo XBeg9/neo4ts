@@ -1,4 +1,4 @@
-import { Column, ColumnProjection } from './column';
+import { Column, ColumnList, ColumnProjection } from './column';
 import { createFactory } from './utils';
 
 /**
@@ -20,7 +20,7 @@ export class Return {
   private _all: boolean = false;
 
   /** @internal */
-  private _columns: Array<Column | ColumnProjection> = [];
+  private _columns: Array<Column | ColumnProjection | ColumnList> = [];
 
   /**
    * Return all elements
@@ -31,7 +31,11 @@ export class Return {
   }
 
   columns(
-    objects: Column | Column[] | ColumnProjection | ColumnProjection[]
+    objects:
+      | Column
+      | ColumnProjection
+      | ColumnList
+      | Array<Column | ColumnProjection | ColumnList>
   ): this {
     this._columns = [
       ...this._columns,
