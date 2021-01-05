@@ -1,5 +1,18 @@
 # @neo4ts/query-builder
 
+## 3.0.0
+
+### Major Changes
+
+- cb5bb0f: BREAKING CHANGES
+  Rename NodeWithParam to Column
+
+### Minor Changes
+
+- c31f538: Add alias to column
+- 01c1311: Add column projection feature
+- a4e94e6: Add List and Projection functionality
+
 ## 2.0.0
 
 ### Major Changes
