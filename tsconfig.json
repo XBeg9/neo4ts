@@ -4,6 +4,9 @@
   "references": [
     {
       "path": "./packages/builder/tsconfig.json"
+    },
+    {
+      "path": "./packages/translate/tsconfig.json"
     }
   ]
 }

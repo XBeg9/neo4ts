@@ -11,12 +11,7 @@ module.exports = {
   parserOptions: {
     project: `${__dirname}/tsconfig.eslint.json`
   },
-  plugins: [
-    'promise',
-    'jest',
-    'prettier',
-    '@typescript-eslint'
-  ],
+  plugins: ['promise', 'jest', 'prettier', '@typescript-eslint'],
   root: true,
   env: {
     node: true,
@@ -68,21 +63,18 @@ module.exports = {
     'arrow-body-style': ['error', 'as-needed'],
     'arrow-parens': 0,
     'lines-between-class-members': ['error', 'always'],
-    'no-irregular-whitespace': ['warn', { "skipComments": true }],
+    'no-irregular-whitespace': ['warn', { skipComments: true }],
 
     // Typescript
 
-    '@typescript-eslint/no-unsafe-call': 'warn',
-    '@typescript-eslint/no-unsafe-member-access': 'warn',
-    '@typescript-eslint/no-unsafe-assignment': 'warn',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-floating-promises': 'warn',
     '@typescript-eslint/no-unsafe-return': 'warn',
     '@typescript-eslint/unbound-method': 'warn',
     '@typescript-eslint/restrict-template-expressions': 'warn',
     '@typescript-eslint/no-implied-eval': 'warn',
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      { ignoreRestSiblings: true }
-    ]
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }]
   }
 };
