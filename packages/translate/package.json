@@ -1,0 +1,14 @@
+{
+    "name": "@neo4ts/graphql-translate",
+    "version": "0.0.0",
+    "main": "./dist/index.js",
+    "typings": "./dist/index.d.ts",
+    "dependencies": {
+        "graphology": "^0.19.2",
+        "graphology-canvas": "^0.2.0",
+        "graphology-types": "^0.19.1",
+        "graphql": "^15.4.0",
+        "graphql-tag": "^2.11.0",
+        "graphql-tools": "^7.0.2"
+    }
+}
