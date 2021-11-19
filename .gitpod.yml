@@ -2,3 +2,31 @@
 tasks:
   - init: yarn
     command: yarn build
+
+vscode:
+  extensions:
+    - adamwalzer.string-converter
+    - ahebrank.yaml2json
+    - bpruitt-goddard.mermaid-markdown-syntax-highlighting
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - codezombiech.gitignore
+    - CoenraadS.bracket-pair-colorizer-2
+    - cschleiden.vscode-github-actions
+    - dbaeumer.vscode-eslint
+    - dracula-theme.theme-dracula
+    - eamodio.gitlens
+    - EditorConfig.EditorConfig
+    - eg2.vscode-npm-script
+    - esbenp.prettier-vscode
+    - formulahendry.auto-close-tag
+    - GraphQL.vscode-graphql
+    - mikestead.dotenv
+    - mohsen1.prettify-json
+    - ms-vscode.js-debug-nightly
+    - ms-vscode.vscode-js-profile-flame
+    - naumovs.color-highlight
+    - PKief.material-icon-theme
+    - redhat.vscode-yaml
+    - streetsidesoftware.code-spell-checker
+    - VisualStudioExptTeam.vscodeintellicode
