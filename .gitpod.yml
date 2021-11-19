@@ -1,6 +1,7 @@
 # Commands to start on workspace startup
 tasks:
-  - init: yarn
+  - before: npm i -g changeset
+    init: yarn
     command: yarn build
 
 vscode:
