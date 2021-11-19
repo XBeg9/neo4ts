@@ -1,0 +1,50 @@
+# Commands to start on workspace startup
+tasks:
+  - name: Install dependencies and build project
+    before: yarn
+    init: yarn build
+
+image:
+  file: .gitpod.Dockerfile
+
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - adamwalzer.string-converter
+    - ahebrank.yaml2json
+    - bpruitt-goddard.mermaid-markdown-syntax-highlighting
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - codezombiech.gitignore
+    - CoenraadS.bracket-pair-colorizer-2
+    - cschleiden.vscode-github-actions
+    - dbaeumer.vscode-eslint
+    - dracula-theme.theme-dracula
+    - eamodio.gitlens
+    - EditorConfig.EditorConfig
+    - eg2.vscode-npm-script
+    - esbenp.prettier-vscode
+    - formulahendry.auto-close-tag
+    - GraphQL.vscode-graphql
+    - mikestead.dotenv
+    - mohsen1.prettify-json
+    - ms-vscode.js-debug-nightly
+    - ms-vscode.vscode-js-profile-flame
+    - naumovs.color-highlight
+    - PKief.material-icon-theme
+    - redhat.vscode-yaml
+    - streetsidesoftware.code-spell-checker
+    - VisualStudioExptTeam.vscodeintellicode
+
+github:
+  prebuilds:
+    # enable for the default branch (defaults to true)
+    master: true
+    # enable for all branches in this repo (defaults to false)
+    branches: true
+    # enable for pull requests coming from this repo (defaults to true)
+    pullRequests: true
+    # add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
+    addComment: true
+    # add a "Review in Gitpod" button to the pull request's description (defaults to false)
+    addBadge: true
