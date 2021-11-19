@@ -1,7 +1,7 @@
 # Commands to start on workspace startup
 tasks:
   - name: Install dependencies
-    init: yarn
+    before: yarn
   - name: Build project
     init: yarn build
 
