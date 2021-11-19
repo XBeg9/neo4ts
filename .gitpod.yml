@@ -1,9 +1,11 @@
 # Commands to start on workspace startup
 tasks:
-  - name: Install dependencies
+  - name: Install dependencies and build project
     before: yarn
-  - name: Build project
     init: yarn build
+
+image:
+  file: .gitpod.Dockerfile
 
 vscode:
   extensions:
