@@ -9,6 +9,7 @@ image:
 
 vscode:
   extensions:
+    - ms-azuretools.vscode-docker
     - adamwalzer.string-converter
     - ahebrank.yaml2json
     - bpruitt-goddard.mermaid-markdown-syntax-highlighting
