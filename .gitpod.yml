@@ -1,8 +1,13 @@
 # Commands to start on workspace startup
 tasks:
-  - before: npm i -g changeset
+  - name: Update NPM
+    init: npm install -g npm@8.1.4
+  - name: Install changeset
+    init: npm i -g changeset
+  - name: Install dependencies
     init: yarn
-    command: yarn build
+  - name: Build project
+    init: yarn build
 
 vscode:
   extensions:
