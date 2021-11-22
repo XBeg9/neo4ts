@@ -1,5 +1,12 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/gitpod/.oh-my-zsh"
@@ -26,7 +33,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
@@ -71,12 +78,15 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
-  dotenv
-  sudo
-  dirhistory
-  zsh-syntax-highlighting
-  zsh-autosuggestions
+    git
+    nvm
+    dotenv
+    docker
+    sudo
+    dirhistory
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+    zsh-completions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -106,30 +116,36 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias ls="exa -la"
 
-#nvm
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+autoload -U compinit && compinit
+
 export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# place this after nvm initialization!
 autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
+ load-nvmrc() {
+     local node_version="\$(nvm version)"
+     local nvmrc_path="\$(nvm_find_nvmrc)"
+     if [ -n "\$nvmrc_path" ]; then
+         local nvmrc_node_version=\$(nvm version "\$(cat "\${nvmrc_path}")")
+     if [ "\$nvmrc_node_version" = "N/A" ]; then
+         nvm install
+     elif [ "\$nvmrc_node_version" != "\$node_version" ]; then
+         nvm use
+     fi
+     elif [ "\$node_version" != "\$(nvm version default)" ]; then
+         echo "Reverting to nvm default version"
+         nvm use default
+     fi
+ }
+ add-zsh-hook chpwd load-nvmrc
+ load-nvmrc
 
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+source ~/gitstatus/gitstatus.prompt.zsh
+
+eval $(thefuck --alias)
