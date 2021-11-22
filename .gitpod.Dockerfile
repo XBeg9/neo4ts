@@ -9,10 +9,12 @@ RUN sudo apt-get update && \
 # Install oh-my-zsh now
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-COPY .zshrc ~/.zshrc
+USER gitpod
+
+COPY /workspace/.zshrc ~/.zshrc
 
 # .zshrc source all the files under /home/gitpod/.bashrc.d/*
-RUN echo "for i in $(ls $HOME/.bashrc.d/*); do source $i; done" >> ~/.zshrc
+RUN echo "for i in \$(ls \$HOME/.bashrc.d/*); do source \$i; done" >> ~/.zshrc
 
 # Install powerlevel10k theme
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
