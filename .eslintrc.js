@@ -4,19 +4,13 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:jest/recommended',
-    'prettier',
-    'prettier/@typescript-eslint'
+    'prettier'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: `${__dirname}/tsconfig.eslint.json`
   },
-  plugins: [
-    'promise',
-    'jest',
-    'prettier',
-    '@typescript-eslint'
-  ],
+  plugins: ['promise', 'jest', 'prettier', '@typescript-eslint'],
   root: true,
   env: {
     node: true,
@@ -68,7 +62,7 @@ module.exports = {
     'arrow-body-style': ['error', 'as-needed'],
     'arrow-parens': 0,
     'lines-between-class-members': ['error', 'always'],
-    'no-irregular-whitespace': ['warn', { "skipComments": true }],
+    'no-irregular-whitespace': ['warn', { skipComments: true }],
 
     // Typescript
 
@@ -80,9 +74,6 @@ module.exports = {
     '@typescript-eslint/unbound-method': 'warn',
     '@typescript-eslint/restrict-template-expressions': 'warn',
     '@typescript-eslint/no-implied-eval': 'warn',
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      { ignoreRestSiblings: true }
-    ]
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }]
   }
 };
