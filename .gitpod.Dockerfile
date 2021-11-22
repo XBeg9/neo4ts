@@ -31,9 +31,6 @@ RUN git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_C
 # Install gitstatus https://github.com/romkatv/gitstatus#using-from-zsh
 RUN git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/gitstatus
 
-# Install global packages
-RUN npm i -g npm@8.1.4 @changesets/cli commitizen npm-check-updates lerna
-
 # Install NVM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
@@ -42,3 +39,6 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/ins
 
 # install thefuck helper https://github.com/nvbn/thefuck
 RUN sudo pip3 install thefuck
+
+# Install global packages
+RUN npm i -g npm@8.1.4 @changesets/cli commitizen npm-check-updates lerna
