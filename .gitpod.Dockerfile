@@ -4,6 +4,7 @@ ENV SHELL=zsh
 
 USER gitpod
 
+# Install OS packages and tools
 RUN sudo apt-get update && \
     sudo apt-get install -y zsh jq python3-dev python3-pip python3-setuptools
 
@@ -18,12 +19,13 @@ RUN sudo apt install -y libgit2-dev rustc && \
     rm -rf exa
 
 # Install oh-my-zsh now
-RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+    chown gitpod:gitpod ~/.zshrc
 
 # Install powerlevel10k theme
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-COPY docker/* /home/gitpod/
+COPY docker/* .nvmrc /home/gitpod/
 
 # Install oh-my-zsh plugins
 RUN git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
@@ -36,6 +38,14 @@ RUN git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/gitstatus
 # Install NVM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
+# Init NVM and install current node version
+RUN export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+    export NODE_VERSION=$(cat /home/gitpod/.nvmrc) && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm install-latest-npm
+
 # install fzf is a general-purpose command-line fuzzy finder. https://github.com/junegunn/fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
@@ -43,7 +53,7 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/ins
 RUN sudo pip3 install thefuck
 
 # Install global packages
-RUN npm i -g npm@8.1.4 @changesets/cli commitizen npm-check-updates lerna
+RUN npm i -g @changesets/cli commitizen npm-check-updates lerna
 
 # Set buildx as the default builder
 RUN docker buildx install
