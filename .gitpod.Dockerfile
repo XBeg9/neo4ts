@@ -4,9 +4,14 @@ ENV SHELL=zsh
 
 USER gitpod
 
-# Install OS packages and tools
-RUN sudo apt-get update && \
-    sudo apt-get install -y zsh jq python3-dev python3-pip python3-setuptools
+# Install tailscale
+RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.gpg | sudo apt-key add - \
+     && curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.list | sudo tee /etc/apt/sources.list.d/tailscale.list \
+     && sudo apt-get update \
+     && sudo apt-get install -y tailscale
+
+# Install OS packages and other tools
+RUN sudo apt-get install -y zsh jq python3-dev python3-pip python3-setuptools
 
 # Install exa (https://github.com/ogham/exa)
 RUN sudo apt install -y libgit2-dev rustc && \
@@ -53,7 +58,7 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/ins
 RUN sudo pip3 install thefuck
 
 # Install global packages
-RUN npm i -g @changesets/cli commitizen npm-check-updates lerna
+RUN npm i -g @changesets/cli commitizen npm-check-updates lerna rimraf
 
 # Set buildx as the default builder
 RUN docker buildx install
