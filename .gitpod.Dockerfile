@@ -2,6 +2,8 @@ FROM gitpod/workspace-full
 
 ENV SHELL=zsh
 
+USER gitpod
+
 RUN sudo apt-get update && \
     sudo apt-get install -y zsh jq python3-dev python3-pip python3-setuptools
 
@@ -42,3 +44,6 @@ RUN sudo pip3 install thefuck
 
 # Install global packages
 RUN npm i -g npm@8.1.4 @changesets/cli commitizen npm-check-updates lerna
+
+# Set buildx as the default builder
+RUN docker buildx install
