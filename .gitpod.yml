@@ -14,15 +14,11 @@ tasks:
     command: |
       sudo -E tailscale up --hostname "gitpod-${GITPOD_WORKSPACE_ID}" \
                            --authkey "${TAILSCALE_AUTHKEY}"
-    openMode: split-right
 
 experimentalNetwork: true
 
 ports:
   - port: 7474
-    onOpen: open-browser
-    visibility: private
-  - port: 7687
     onOpen: ignore
     visibility: private
 
