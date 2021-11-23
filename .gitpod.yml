@@ -1,9 +1,13 @@
 # Commands to start on workspace startup
 tasks:
+  - name: Run docker-compose services
+    command: docker-compose up
+    openMode: split-left
   - name: Install dependencies and build project
     before: yarn
     init: yarn build
-
+    command: yarn watch
+    openMode: split-right
 ports:
   - port: 7474
     onOpen: open-browser
