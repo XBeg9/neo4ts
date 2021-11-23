@@ -22,3 +22,5 @@ certs
 **/istio-*
 temp
 **/docs/api
+data/*
+!data/.gitkeep
