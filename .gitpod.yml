@@ -4,6 +4,14 @@ tasks:
     before: yarn
     init: yarn build
 
+ports:
+  - port: 7474
+    onOpen: open-browser
+    visibility: private
+  - port: 7687
+    onOpen: ignore
+    visibility: private
+
 image:
   file: .gitpod.Dockerfile
 
