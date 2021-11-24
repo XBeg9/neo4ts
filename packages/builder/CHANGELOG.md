@@ -1,5 +1,15 @@
 # @neo4ts/query-builder
 
+## 3.1.0
+
+### Minor Changes
+
+- ff2d5a6: add ncu and upgrade all packages
+
+### Patch Changes
+
+- ab374de: Adding gitpod to project
+
 ## 3.0.0
 
 ### Major Changes
