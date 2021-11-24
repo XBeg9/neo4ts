@@ -6,14 +6,20 @@ tasks:
     before: yarn
     init: yarn build
     command: yarn watch
+    openMode: tab-after
+  - name: Jest
+    init: yarn test
+    command: yarn test --watch
     openMode: split-right
   - name: tailscaled
     command: |
       sudo tailscaled
+    openMode: tab-after
   - name: tailscale
     command: |
       sudo -E tailscale up --hostname "gitpod-${GITPOD_WORKSPACE_ID}" \
                            --authkey "${TAILSCALE_AUTHKEY}"
+    openMode: split-right
 
 experimentalNetwork: true
 

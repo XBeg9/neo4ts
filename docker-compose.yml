@@ -13,10 +13,10 @@ services:
             - NEO4JLABS_PLUGINS=["apoc"]
             - NEO4J_dbms_security_procedures_whitelist=apoc.*
         volumes:
-            - ./data/neo4j/data:/data
-            - ./data/neo4j/logs:/logs
-            - ./data/neo4j/import:/var/lib/neo4j/import
-            - ./data/neo4j/plugins:/plugins
+            - $HOME/neo4j/data:/data
+            - $HOME/neo4j/logs:/logs
+            - $HOME/neo4j/import:/var/lib/neo4j/import
+            - $HOME/neo4j/plugins:/plugins
         healthcheck:
             test: wget http://localhost:7474/browser -O -
             interval: 1s

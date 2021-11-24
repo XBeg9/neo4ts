@@ -24,3 +24,4 @@ temp
 **/docs/api
 data/*
 !data/.gitkeep
+.jest-cache
